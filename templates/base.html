@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body class="bg-gray-100">
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <style>
+        .truncate-20 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100ch;
+        }
+          
+    </style>
+    <!-- Header -->
+    
+    <!-- Content -->
+    <div class="container mx-auto mt-8">        
+        {% block content %}
+        {% endblock content %} 
+        <!-- Carousel -->
+        <!-- Your carousel HTML code here -->
+
+        <!-- News Block -->
+        <!-- Your news block HTML code here -->
+
+        <!-- Benefits Block -->
+        <!-- Your benefits block HTML code here -->
+
+        <!-- Achievements Block -->
+        <!-- Your achievements block HTML code here -->
+    </div>
+</body>
+</html>
