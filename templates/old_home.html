@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block content %}
+    <!-- НОВОСТИ -->
+    <div class="bg-gradient-to-bl from-blue-50 to-violet-50 flex items-top justify-center">
+        <div class="container mx-auto mx-auto p-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+                {% for article in news_page %}
+                    <div class="bg-white rounded-lg border p-4">
+                        <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-48 rounded-md object-cover">
+                        <div class="px-1 py-4">
+                            <div class="font-bold text-xl mb-2">{{ article.title }}</div>
+                            <p class="text-gray-500 text-base">Категория: {{ article.category }}</p>
+                            <p class="text-gray-700 text-base truncate-20">{{ article.content }}</p>
+                        </div>
+                        <div class="px-1 py-1">
+                            <p class="text-gray-300 text-xs">Дата и время публикации: {{ article.pub_date }}</p>
+                        </div>
+                        <div class="px-1 py-4">
+                            <button id="openModal{{ article.id }}" class="px-4 py-2 text-xs font-bold text-white uppercase transition-all duration-150 bg-blue-500 rounded shadow outline-none active:bg-teal-600 hover:shadow-md focus:outline-none ease">Подробнее</button>
+                        </div>
+                    </div>
+
+                    <!-- Скрипты для управления модальными окнами -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            document.getElementById('openModal{{ article.id }}').addEventListener('click', function () {
+                                document.getElementById('myModal{{ article.id }}').classList.remove('hidden');
+                            });
+                
+                            document.getElementById('closeModal{{ article.id }}').addEventListener('click', function () {
+                                document.getElementById('myModal{{ article.id }}').classList.add('hidden');
+                            });
+                        });
+                    </script>
+                {% endfor %}
+                    <!-- Модальное окно -->
+                {% for article in news_page %}
+                    <div id="myModal{{ article.id }}" class="modal fixed hidden inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+                        <div class="modal-content bg-white p-8">
+                            <!-- Ваш контент для подробных новостей -->
+                            <h2 class="text-2xl font-bold mb-4">{{ article.title }}</h2>
+                            <p id="originalText">{{ article.content|linebreaks }}</p>
+
+                            <!-- Кнопка для закрытия модального окна -->
+                            <button id="closeModal{{ article.id }}" class="px-4 py-2 mt-5 text-xs font-bold text-white uppercase transition-all duration-150 bg-blue-500 rounded shadow outline-none active:bg-teal-600 hover:shadow-md focus:outline-none ease">Закрыть</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class='flex items-center justify-center'>
+        <div class="flex flex-col items-center mb-8 px-4 mx-auto mt-8">
+            <div class="font-sans flex justify-end space-x-1 select-none">
+                {% if news_page.has_previous %}
+                    <a href="?page={{ news_page.previous_page_number }}" class="flex items-center px-4 py-2 text-gray-500 bg-gray-300 rounded-md">Previous</a>
+                {% endif %}
+    
+                {% for i in news_page.paginator.page_range %}
+                    <a href="?page={{ i }}" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md {% if news_page.number == i %} 
+                    font-bold hover:bg-teal-400 hover:text-white 
+                    {% else %} hover:bg-teal-400 hover:text-white 
+                    {% endif %}" style="transition: all 0.2s ease;">{{ i }}</a>
+                {% endfor %}
+    
+                {% if news_page.paginator.num_pages > 3 %}
+                    <span class="px-4 py-2 text-gray-700  rounded-md">...</span>
+                {% endif %}
+    
+                {% if news_page.has_next %}
+                    <a href="?page={{ news_page.next_page_number }}" class="flex items-center px-4 py-2 text-gray-500 bg-gray-300 rounded-md" style="transition: all 0.2s ease;">Next</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!--КОНЕЦ НОВОСТЕЙ-->
+{% endblock content %}
